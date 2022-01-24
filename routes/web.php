@@ -24,7 +24,7 @@ Route::get('/', function () {
 });
 
 // admin routes
-Route::group(['prefix' => 'admin', 'as' => 'admin'], function (){
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function (){
     Route::view('/', 'admin.index')->name('index');
     Route::resource('/news', AdminNewsController::class);
     Route::resource('/categories', AdminCategoryController::class);
@@ -37,18 +37,6 @@ Route::get('/news', [NewsController::class, 'index'])
 Route::get('/news/{id}', [NewsController::class, 'show'])
     ->where('id','\d+')
     ->name('news.show');
-
-// index routes
-Route::get('/index', [IndexController::class, 'index'])
-    ->name('index.index');
-
-// auth routes
-Route::get('/auth', [AuthController::class, 'index'])
-    ->name('auth.index');
-
-// addNews routes
-Route::get('/addNews', [AddNewsController::class, 'index'])
-    ->name('addNews.index');
 
 // category routes
 Route::get('/category', [CategoryController::class, 'index'])
