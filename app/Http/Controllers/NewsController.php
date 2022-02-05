@@ -8,19 +8,16 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $model = new News();
-        $news = $model->getNews();
+        $news = News::query()->select(News::$availableFields)->get();
 
         return view('news.index', [
           'newsList' => $news
         ]);
     }
 
-    public function show(int $id)
+    public function show(News $news)
     {
-        $model = new News();
-        $news = $model->getNewsById($id);
-
+        //Приходит пустой news
         return view('news.show', [
             'news' => $news
         ]);

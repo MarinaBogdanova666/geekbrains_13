@@ -38,4 +38,48 @@
             <h2>Нет новостей</h2>
         @endforelse
     </div>
+
+    <h1 class="h2">Отзыв</h1>
+    <div>
+        <form method="post" action="{{ route('admin.news.store') }}">
+            @csrf
+            <div class="form-group" >
+                <label for="title">Имя пользователя</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
+            </div>
+            <div class="form-group">
+                <label for="description">Поле для ввода комментария / отзыва по работе проекта</label>
+                <textarea class="form-control" name="description" id="description" cols="10" rows="5">{!! old('description') !!}</textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-success" style="float: right;">Сохранить</button>
+        </form>
+    </div>
+    <br>
+    <div>
+
+        <h1 class="h2">Форма заказа на получение выгрузки данных</h1>
+
+        <form method="post" action="{{ route('admin.news.store') }}">
+            @csrf
+            <div class="form-group" >
+                <label for="title">Имя</label>
+                <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
+            </div>
+            <div class="form-group">
+                <label for="number">Номер телефона</label>
+                <input type="text" class="form-control" id="number" name="number" value="{{ old('number') }}">
+            </div>
+            <div class="form-group">
+                <label for="email">Email-адрес</label>
+                <input type="text" class="form-control" id="email" name="email" value="{{ old('email') }}">
+            </div>
+            <div class="form-group">
+                <label for="description">Информации о том, что вы хотите получить</label>
+                <textarea class="form-control" name="description" id="description" cols="30" rows="7">{!! old('description') !!}</textarea>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-success" style="float: right;">Отправить заявку</button>
+        </form>
+    </div>
 @endsection
