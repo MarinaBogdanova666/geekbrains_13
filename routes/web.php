@@ -29,7 +29,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function (){
 // news routes
 Route::get('/news', [NewsController::class, 'index'])
     ->name('news.index');
-
-Route::get('/news/{id}', [NewsController::class, 'show'])
+Route::get('/news/{news}', [NewsController::class, 'show'])
     ->where('news','\d+')
     ->name('news.show');
