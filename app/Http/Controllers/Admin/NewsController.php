@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
@@ -7,7 +7,6 @@ use App\Http\Requests\News\CreateRequest;
 use App\Http\Requests\News\EditRequest;
 use App\Models\Category;
 use App\Models\News;
-use Illuminate\Http\Request;
 
 class NewsController extends Controller
 {

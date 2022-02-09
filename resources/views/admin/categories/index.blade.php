@@ -49,12 +49,10 @@
 
 @push('js')
     <script type="text/javascript">
-        console.log('Загрузка контента!');
         document.addEventListener("DOMContentLoaded", function() {
             const el = document.querySelectorAll(".delete");
             el.forEach(function (e, k) {
                 e.addEventListener('click', function() {
-                    console.log('Срабатывание кнопки при удалении новости');
                     const id = e.getAttribute("rel");
                     if (confirm("Подтверждаете удаление записи с #ID =" + id + " ?")) {
                         send('/admin/categories/' + id).then(() => {

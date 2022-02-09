@@ -19,6 +19,12 @@
                     Категории
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link @if(request()->routeIs('admin.profiles.*')) active @endif" href="{{ route('admin.profiles.index') }}">
+                    <span data-feather="users"></span>
+                    Профили
+                </a>
+            </li>
         </ul>
     </div>
 </nav>

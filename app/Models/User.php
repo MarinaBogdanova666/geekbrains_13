@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace App\Models;
 
@@ -12,6 +12,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public static $availableFields = ['id', 'name', 'email', 'password', 'remember_token', 'last_login_at', 'is_admin'];
+    protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +24,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'remember_token',
+        'last_login_at',
+        'is_admin'
     ];
 
     /**
@@ -40,5 +46,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean'
     ];
 }
