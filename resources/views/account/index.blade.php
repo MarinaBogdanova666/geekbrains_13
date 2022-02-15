@@ -4,6 +4,9 @@
     <a href="{{ route('admin.index') }}" style="color: red;">Перейти в Админку</a>
     <br>
 @endif
+@if(Auth::user()->avatar)
+    <img src="{{ Auth::user()->avatar }}" style="width: 300px">
+@endif
 <a href="{{ route('account.logout') }}" style="color: #0a53be;">Выход</a>
 
 
