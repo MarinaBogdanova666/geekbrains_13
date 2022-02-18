@@ -7,19 +7,19 @@ use App\Http\Requests\News\CreateRequest;
 use App\Http\Requests\News\EditRequest;
 use App\Models\Category;
 use App\Models\News;
+use App\Services\UploadService;
 
 class NewsController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function index()
     {
         $news = News::query()
             ->whereHas('category')
-//            ->select(News::$availableFields)
             ->paginate(10);
 
         return view('admin.news.index', [
@@ -30,7 +30,7 @@ class NewsController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
@@ -45,7 +45,7 @@ class NewsController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  CreateRequest $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateRequest $request)
     {
@@ -79,7 +79,7 @@ class NewsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  News $news
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit(News $news)
     {
@@ -96,14 +96,19 @@ class NewsController extends Controller
      *
      * @param  EditRequest $request
      * @param  News $news
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(EditRequest $request, News $news)
     {
         $rules = $request->rules();
-        $updated = $news->fill($request->validate($rules) + [
-            'slug' => \Str::slug($request->input('title'))
-        ])->save();
+        $validated = $request->validate($rules);
+        if ($request->imageRemove === "true"){
+            $validated['image'] = null;
+        }
+        if($request->hasFile('image')){
+            $validated['image'] = app(UploadService::class)->start($request->file('image'));
+        }
+        $updated = $news->fill($validated)->save();
 
         if($updated){
             return redirect()->route('admin.news.index')
@@ -118,7 +123,7 @@ class NewsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  News $news
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy(News $news)
     {

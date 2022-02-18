@@ -13,7 +13,7 @@
 @section('content')
     <div>
         @include('inc.message')
-        <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}">
+        <form method="post" action="{{ route('admin.news.update', ['news' => $news]) }}" enctype="multipart/form-data">
             @csrf
             @method('put')
             <div class="form-group" >
@@ -45,6 +45,18 @@
                 </select>
             </div>
             <div class="form-group">
+                <div>
+                    <label for="image">Изображение</label>
+                </div>
+                @if($news->image)
+                    <img id="preview" src="{{ Storage::disk('public')->url($news->image) }}" style="width: 200px;">&nbsp;
+                    <a href="javascript:;" class="delete" rel="{{ $news->id }}">[X]</a>
+                @endif
+                <input type="file" class="form-control" id="image" name="image" value="{{ $news->image }}">
+                {{--      Костыль для удаления image из базы          --}}
+                <input type="hidden" name="imageRemove" value=false>
+            </div>
+            <div class="form-group">
                 <label for="description">Описание</label>
                 <textarea class="form-control" name="description" id="description" cols="30" rows="10">{!! $news->description !!}</textarea>
             </div>
@@ -53,3 +65,31 @@
         </form>
     </div>
 @endsection
+@push('js')
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const el = document.querySelectorAll(".delete");
+            el.forEach(function (e, k) {
+                e.addEventListener('click', function() {
+                    const input = document.querySelector('input[name=imageRemove]');
+                    if (!input) return;
+
+                    if (!confirm('Вы действительно хотите удалить изображение?')) return;
+
+                    input.value = true;
+                    const preview = document.getElementById('preview');
+                    if (!preview) return;
+
+                    preview.src = '';
+                });
+            });
+        });
+    </script>
+    <script>
+        ClassicEditor
+            .create( document.querySelector( '#description' ) )
+            .catch( error => {
+                console.error( error );
+            } );
+    </script>
+@endpush

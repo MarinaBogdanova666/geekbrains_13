@@ -17,7 +17,6 @@ class NewsController extends Controller
 
     public function show(News $news)
     {
-        //Приходит пустой news
         return view('news.show', [
             'news' => $news
         ]);
